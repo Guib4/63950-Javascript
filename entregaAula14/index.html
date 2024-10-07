@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Quiz sobre HTML, CSS e JavaScript</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <header>
+        <h1>Quiz: Teste seus conhecimentos em HTML, CSS e JavaScript</h1>
+    </header>
+
+    <main>
+        <form id="quiz-form">
+            <div class="quiz-item">
+                <h3>1. O que significa HTML?</h3>
+                <label><input type="radio" name="q1" value="a"> Hyper Text Markup Language</label><br>
+                <label><input type="radio" name="q1" value="b"> High Tech Markup Language</label><br>
+                <label><input type="radio" name="q1" value="c"> Home Tool Markup Language</label><br>
+                <label><input type="radio" name="q1" value="d"> Hyperlinks and Text Markup Language</label>
+            </div>
+
+            <div class="quiz-item">
+                <h3>2. Qual a propriedade CSS usada para alterar a cor de fundo de um elemento?</h3>
+                <label><input type="radio" name="q2" value="a"> color</label><br>
+                <label><input type="radio" name="q2" value="b"> background-color</label><br>
+                <label><input type="radio" name="q2" value="c"> bgcolor</label><br>
+                <label><input type="radio" name="q2" value="d"> background</label>
+            </div>
+
+            <div class="quiz-item">
+                <h3>3. Qual das opções é uma estrutura de controle de fluxo no JavaScript?</h3>
+                <label><input type="radio" name="q3" value="a"> while</label><br>
+                <label><input type="radio" name="q3" value="b"> for</label><br>
+                <label><input type="radio" name="q3" value="c"> if</label><br>
+                <label><input type="radio" name="q3" value="d"> Todas as alternativas acima</label>
+            </div>
+
+            <button type="button" onclick="calcularResultado()">Ver Resultado</button>
+        </form>
+
+        <div id="resultado" class="resultado"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 - Quiz de HTML, CSS e JavaScript</p>
+    </footer>
+
+    <script src="index.js"></script>
+</body>
+</html>
