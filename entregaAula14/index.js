@@ -1,54 +1,139 @@
-// Função para exibir a próxima pergunta
-function proximaPergunta(numeroPergunta) {
-    // Oculta a pergunta atual
-    const perguntas = document.getElementsByClassName('quiz-screen');
-    for (let i = 0; i < perguntas.length; i++) {
-        perguntas[i].style.display = 'none';
+const perguntas = [
+    {
+        pergunta: "O que significa HTML?",
+        opcoes: [
+            "Hyper Text Markup Language",
+            "High Tech Markup Language",
+            "Home Tool Markup Language",
+            "Hyperlinks and Text Markup Language"
+        ],
+        resposta: "Hyper Text Markup Language"
+    },
+    {
+        pergunta: "Qual a propriedade CSS usada para alterar a cor de fundo de um elemento?",
+        opcoes: [
+            "color",
+            "background-color",
+            "bgcolor",
+            "background"
+        ],
+        resposta: "background-color"
+    },
+    {
+        pergunta: "Qual das opções é uma estrutura de controle de fluxo no JavaScript?",
+        opcoes: [
+            "while",
+            "for",
+            "if",
+            "Todas as alternativas acima"
+        ],
+        resposta: "Todas as alternativas acima"
+    },
+    {
+        pergunta: "Qual atributo HTML é usado para definir um link?",
+        opcoes: [
+            "src",
+            "href",
+            "alt",
+            "link"
+        ],
+        resposta: "href"
+    },
+    {
+        pergunta: "Como você cria uma função no JavaScript?",
+        opcoes: [
+            "function myFunction()",
+            "function:myFunction()",
+            "function = myFunction()",
+            "create myFunction()"
+        ],
+        resposta: "function myFunction()"
+    },
+    {
+        pergunta: "Qual o método usado para acessar um elemento HTML pelo ID no JavaScript?",
+        opcoes: [
+            "document.getElementById()",
+            "document.querySelector()",
+            "document.getElementsByClass()",
+            "document.getElement()"
+        ],
+        resposta: "document.getElementById()"
     }
-    // Exibe a próxima pergunta
-    document.getElementById('question' + numeroPergunta).style.display = 'block';
-}
+];
 
-// Função para calcular o resultado final
-function calcularResultado() {
-    const form = document.getElementById('quiz-form');
-    let pontuacao = 0;
+let perguntaAtual = 0;
+let pontuacao = 0;
 
-    // Respostas corretas
-    const respostasCorretas = {
-        q1: 'a',
-        q2: 'b',
-        q3: 'd',
-        q4: 'b',
-        q5: 'a',
-        q6: 'a'
-    };
+function carregarPergunta() {
+    const quizForm = document.getElementById('quiz-form');
+    quizForm.innerHTML = '';
 
-    // Verificando as respostas
-    const respostasUsuario = new FormData(form);
-    for (let [pergunta, resposta] of respostasUsuario.entries()) {
-        if (resposta === respostasCorretas[pergunta]) {
-            pontuacao++;
-        }
-    }
+    if (perguntaAtual < perguntas.length) {
+        const perguntaObj = perguntas[perguntaAtual];
 
-    // Ocultar todas as perguntas
-    const perguntas = document.getElementsByClassName('quiz-screen');
-    for (let i = 0; i < perguntas.length; i++) {
-        perguntas[i].style.display = 'none';
-    }
+        // Exibe a pergunta
+        const perguntaElement = document.createElement('h3');
+        perguntaElement.textContent = `${perguntaAtual + 1}. ${perguntaObj.pergunta}`;
+        quizForm.appendChild(perguntaElement);
 
-    // Exibir o resultado
-    const resultadoDiv = document.getElementById('resultado');
-    resultadoDiv.style.display = 'block';
-    resultadoDiv.textContent = `Você acertou ${pontuacao} de 6 perguntas!`;
+        // Exibe as opções
+        perguntaObj.opcoes.forEach(opcao => {
+            const label = document.createElement('label');
+            label.innerHTML = `
+                <input type="radio" name="pergunta" value="${opcao}">
+                ${opcao}
+            `;
+            quizForm.appendChild(label);
+            quizForm.appendChild(document.createElement('br'));
+        });
 
-    // Estilização dinâmica do resultado (opcional)
-    if (pontuacao === 6) {
-        resultadoDiv.style.color = 'green';
-    } else if (pontuacao === 0) {
-        resultadoDiv.style.color = 'red';
+        // Botão para a próxima pergunta
+        const button = document.createElement('button');
+        button.type = "button";
+        button.textContent = perguntaAtual < perguntas.length - 1 ? "Próxima" : "Ver Resultado";
+        button.onclick = verificarResposta;
+        quizForm.appendChild(button);
+
     } else {
-        resultadoDiv.style.color = '#0056b3';
+        exibirResultado();
     }
 }
+
+function verificarResposta() {
+    const respostaSelecionada = document.querySelector('input[name="pergunta"]:checked');
+    if (!respostaSelecionada) {
+        alert("Selecione uma resposta.");
+        return;
+    }
+
+    if (respostaSelecionada.value === perguntas[perguntaAtual].resposta) {
+        pontuacao++;
+    }
+
+    perguntaAtual++;
+    carregarPergunta();
+}
+
+function exibirResultado() {
+    const quizForm = document.getElementById('quiz-form');
+    const resultadoDiv = document.getElementById('resultado');
+
+    quizForm.style.display = 'none';
+    resultadoDiv.style.display = 'block';
+
+    const percentual = ((pontuacao / perguntas.length) * 100).toFixed(0);
+    resultadoDiv.textContent = `Você acertou ${pontuacao} de ${perguntas.length} perguntas (${percentual}%).`;
+
+    if (percentual === "100") {
+        resultadoDiv.style.color = 'green';
+        resultadoDiv.innerHTML += "<br>Parabéns, você acertou todas as perguntas!";
+    } else if (percentual >= 50) {
+        resultadoDiv.style.color = '#0056b3';
+        resultadoDiv.innerHTML += "<br>Boa! Você tem bons conhecimentos.";
+    } else {
+        resultadoDiv.style.color = 'red';
+        resultadoDiv.innerHTML += "<br>Tente novamente para melhorar sua pontuação.";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", carregarPergunta);
